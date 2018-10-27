@@ -1,0 +1,39 @@
+ body {
+  background: url("../images/jf.gif") no-repeat center fixed ; 
+-webkit-background-size: cover; 
+  background-size: cover; 
+}
+.btn-danger{
+    background: #2B2B2B;
+
+    border:none;
+}
+img{
+    width: 100%;
+}
+button.btn.btn-primary.btn-xs{
+    background-color: #2B2B2B;
+    
+}
+button.btn.btn-primary.btn-xs:hover{
+    border-radius: 11px;
+    border-color:beige;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+.container::before{
+color: black;
+}

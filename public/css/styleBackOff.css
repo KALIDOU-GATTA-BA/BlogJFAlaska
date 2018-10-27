@@ -1,0 +1,46 @@
+.chapterManager, .commentManager{
+	text-align:center;
+	font-size:25px;
+	color:blue;
+	text-decoration:underline;
+	text-shadow:44px;
+	text-indent: 20px;
+	letter-spacing: 3px;
+}
+
+.reportedCommentManager{
+	text-align:left;
+	font-size:18px;
+	color:darkred;
+	text-decoration:underline;
+}
+.notReadCommentManager{
+	text-align:left;
+	font-size:18px;
+	color:darkgreen;
+	text-decoration:underline;
+}
+body {
+      background-color: #EFECCA;
+}
+.dec{
+	
+	color:red;
+       background-color:white;
+}
+.glyphicon.glyphicon-pencil{
+	color:green;
+	font-size: 23px;
+}
+.glyphicon.glyphicon-trash{
+	color:red;
+	font-size: 23px;
+}
+pre a{
+ background-color: white;
+ color: red;
+}
+.foot{
+	text-align: center;
+        color:blue;
+}
