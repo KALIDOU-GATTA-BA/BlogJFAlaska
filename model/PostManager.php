@@ -52,15 +52,7 @@ class PostManager extends Manager
        'iD' => $id
         ));
     }
-    public function updateEdito()
-    {
-       $db=$this->dbConnect();
-       $req1=$db->prepare("UPDATE posts SET edito = :edit ");
-       $req1->execute(array(
-       'edit' => htmlspecialchars($_POST['edito'])
-       )); 
-       echo "Votre éditorial a bien été mis à jour".'<br><br>';
-    }
+ 
     public function pagination()
     {
        $db = $this->dbConnect();
@@ -72,13 +64,7 @@ class PostManager extends Manager
                           echo '<a href="../../index.php?action=listPosts&page='.$i.'">'.$i.'</a> ';             
         }
     }
-    public function edito()
-    {
-        $db = $this->dbConnect();
-        $req = $db->query('SELECT edito FROM posts ');
-        $req= $req->fetch(); 
-        return $req;
-    }
+ 
     public function fetchPostsBackView()
     {
          $db = $this->dbConnect();
@@ -121,4 +107,3 @@ class PostManager extends Manager
           return $chapter;
     }
 }
- 
