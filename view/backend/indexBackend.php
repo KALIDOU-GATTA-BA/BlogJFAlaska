@@ -1,3 +1,9 @@
+<?php 
+          session_start();
+          if (!$_SESSION['admin']=="admin"){
+echo "Pour accéder à cette page, vous devez vous authentifier!";
+}
+else{ ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -19,7 +25,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 col-xl-12">
-			<a href="../../controller/mainForLogin.php?deconnexion=true"><strong><span class="dec">Deconnexion</span></strong></a><br>
+			<a href="../../controller/disconnect.php"><strong><span class="dec">Deconnexion</span></strong></a><br>
                         <a href="http://kalidougattaba.fr"><strong>Accueil</strong></a><br><br><br>
                          <table class="table table-dark table-hover">
 				<thead>
@@ -29,8 +35,8 @@
 					  </tr>
 				</thead>
 					  	<?php                                                     
-                		                        require_once("../../model/PostManager.php");
-                                                       $req=new PostManager();
+                		                        require_once("../../model/EditoManager.php");
+                                                       $req=new EditoManager();
                                                        $req=$req->edito();      
                 		                ?>
                 		<tbody>
@@ -153,4 +159,4 @@
 	</div>
 </div>    
 </body>
-</html> 
+</html><?php } ?>
