@@ -8,7 +8,6 @@ class PostManager extends Manager
 {
     public function getPosts()
     {
- 
         $db = $this->dbConnect();
         $chapterByPage= 3;
         $currentPage= intval ($_GET['page']);
@@ -38,8 +37,10 @@ class PostManager extends Manager
     {
        $db=$this->dbConnect();
        $id=$_GET['id'];
-       $req=$db->query("DELETE FROM posts where id=$id");    
-       $req=$db->query("DELETE FROM comments where post_id=$id"); 
+       $req=$db->prepare("DELETE FROM posts where id=? ");   
+       $req->execute(array($id)); 
+       $req=$db->prepare("DELETE FROM comments where post_id=? "); 
+       $req->execute(array($id));
     }
     public function update()
     {
@@ -64,7 +65,7 @@ class PostManager extends Manager
                           echo '<a href="../../index.php?action=listPosts&page='.$i.'">'.$i.'</a> ';             
         }
     }
- 
+    
     public function fetchPostsBackView()
     {
          $db = $this->dbConnect();
@@ -74,15 +75,17 @@ class PostManager extends Manager
      public function fetchCountNotReadComments()
     {
           $db = $this->dbConnect();
-          $posts= $db->query('SELECT COUNT(notReadComment) as fetchComment from comments where notReadComment = 1'); 
+          $posts= $db->prepare('SELECT COUNT(notReadComment) as fetchComment from comments where notReadComment = ? '); 
+          $posts->execute(array(1));
           $req=$posts->fetch();
           $req= $req['fetchComment'];
-           return $req;
+          return $req;
     }
     public function fetchCountReportedComments()
     {
           $db = $this->dbConnect();
-          $posts= $db->query('SELECT COUNT(reported) as reportedComment from comments where reported = 1'); 
+          $posts= $db->prepare('SELECT COUNT(reported) as reportedComment from comments where reported =? '); 
+          $posts->execute(array(1));
           $req=$posts->fetch();
           $req= $req['reportedComment'];
           return $req;
@@ -91,19 +94,23 @@ class PostManager extends Manager
     public function fetchReportedComments()
     {
           $db = $this->dbConnect();
-	      $reported= $db->query('SELECT author, id, post_id, SUBSTRING(comment, 1,20) AS cmt from comments where reported=1');
+	  $reported= $db->prepare('SELECT author, id, post_id, SUBSTRING(comment, 1,20) AS cmt from comments where reported=?');
+          $reported->execute(array(1));
           return $reported;
     }
     public function fetchNotReadComments()
     {
           $db = $this->dbConnect();
-          $notRead= $db->query('SELECT SUBSTRING(comment, 1,20) AS cmt, post_id, id, comment_date from comments where notReadComment=1');
+          $notRead= $db->prepare('SELECT SUBSTRING(comment, 1,20) AS cmt, post_id, id, comment_date from comments where notReadComment=?');
+          $notRead->execute(array(1));
           return $notRead;
     }
     public function fetchNotReadComments2($postId)
     {
           $db = $this->dbConnect();
-          $chapter= $db->query("SELECT title from posts where id=$postId");
+          $chapter= $db->prepare("SELECT title from posts where id=? ");
+          $chapter->execute(array($postId));
           return $chapter;
     }
 }
+ 
