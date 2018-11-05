@@ -2,7 +2,6 @@
     spl_autoload_register(function ($Manager) {
     include $Manager . '.php';
     });
-
     class CommentManager extends Manager
     {
         public function getComments($postId)
@@ -12,35 +11,36 @@
             $comments->execute(array($postId));
             return $comments;
         }
-
         public function postComment($postId, $author, $comment)
         {
             $db = $this->dbConnect();
             $comments = $db->prepare('INSERT INTO comments(post_id, author, comment, reported, notReadComment, comment_date) VALUES(?, ?, ?, 0, 1, NOW())');
             $affectedLines = $comments->execute(array($postId, $author, $comment));
-
             return $affectedLines;
         }
-
        public function deleteReportedComment()
         {
-
            $db=$this->dbConnect();
            $id=$_GET['id'];
-           $req=$db->query("SELECT COUNT(comment) as nbCmt FROM comments WHERE post_id = $id ");
+           $req=$db->prepare("SELECT COUNT(comment) as nbCmt FROM comments WHERE post_id < ? ");
+           $req->execute(array($id));
            $data= $req->fetch();
            $_= $data['nbCmt'];
-           $req1=$db->query("DELETE FROM comments where id=$id");
+           $req1=$db->prepare("DELETE FROM comments where id = :id");
+           $req1->execute(array(
+            'id' => $id
+            ));
            $req1 = $db->prepare("UPDATE posts SET countComment = :countCmt WHERE id = $id ");
                   $req->execute(array(
                   'countCmt' => $_
                   ));
        }
-     
+ 
         public function countComment($postId)
      {
              $db=$this->dbConnect();
-             $req=$db->query("SELECT COUNT(comment) as nbCmt FROM comments WHERE post_id = $postId ");
+             $req=$db->prepare("SELECT COUNT(comment) as nbCmt FROM comments WHERE post_id = ? ");
+             $req->execute(array($postId));
              $data= $req->fetch();
              $insert= $data['nbCmt'];
              $req1=$db->prepare("UPDATE posts SET countComment = :countCmt WHERE id = $postId ");
@@ -64,7 +64,8 @@
         $db=$this->dbConnect();
     	$id=$_GET['id'];
    	$idC=$_GET['idC'];
-        $req= $db->query("SELECT alreadyReported FROM comments where id = '$idC' and post_id= '$id' ");
+        $req= $db->prepare("SELECT alreadyReported FROM comments where id = ? and post_id= ? ");
+        $req->execute(array($idC, $id));
         $bool=$req->fetch();
         $_= $bool['alreadyReported'];
         if ($_==0){ 
@@ -81,7 +82,7 @@
             <br> <a href="/index.php?action=post&amp;id=<?= $id?>">Retour</a>
         <?php }
    }
-   public function reportedCommentsManager()
+  public function reportedCommentsManager()
   {
     $db=$this->dbConnect();
     $id=$_GET['id'];
