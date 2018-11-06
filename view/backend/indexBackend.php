@@ -1,9 +1,3 @@
-<?php 
-          session_start();
-          if (!$_SESSION['admin']=="admin"){
-echo "Pour accéder à cette page, vous devez vous authentifier!";
-}
-else{ ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -25,7 +19,7 @@ else{ ?>
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 col-xl-12">
-			<a href="../../controller/disconnect.php"><strong><span class="dec">Deconnexion</span></strong></a><br>
+			<a href="../../index.php?action=disconnect"><strong><span class="dec">Deconnexion</span></strong></a><br>
                         <a href="http://kalidougattaba.fr"><strong>Accueil</strong></a><br><br><br>
                          <table class="table table-dark table-hover">
 				<thead>
@@ -33,18 +27,12 @@ else{ ?>
 						<th style="text-align:left;">Éditorial</th>
 						<th style="text-align:right;">Modifier</th>
 					  </tr>
-				</thead>
-					  	<?php                                                     
-                		                        require_once("../../model/EditoManager.php");
-                                                       $req=new EditoManager();
-                                                       $req=$req->edito();      
-                		                ?>
-                		<tbody>
-						  	<tr>
-						  	<td style="color:blue;"><?php $t=$req['edito'];
-                                                        echo substr ( $t, 0, 100).htmlspecialchars('[...]') ; ?></td>
-							<td style="text-align:right;"><a href="updateEditoView.php"><span class="glyphicon glyphicon-pencil" style="text-align:center;"></span></a></td>
-							</tr>
+				</thead>				  	
+                <tbody>
+					<tr>
+					 <td style="color:blue;"><?= substr ( $edito, 0, 100).htmlspecialchars('[...]'); ?></td> 
+					 <td style="text-align:right;"><a href="../../index.php?action=updateEdito"><span class="glyphicon glyphicon-pencil" style="text-align:center;"></span></a></td>
+					</tr>
 				</tbody>				
 			</table>
 			<div class="chapterManager">
@@ -60,14 +48,8 @@ else{ ?>
 						<th style="text-align:right;">Supprimer</th>
 					  </tr>
 				</thead>
-			       <?php                                                     
-                		 require_once("../../model/PostManager.php");
-                                $req=new PostManager();
-                                $req=$req->fetchPostsBackView();
-                                $posts=$req;
-                		 while ($data = $posts->fetch()){ 
-                		?>
-                		<tbody>
+			       <?php while ($data = $posts->fetch()){ ?>         		    		
+                <tbody>
 				    <tr>
 				       <td style="color:blue;"><strong><?= htmlspecialchars($data['title']) ?></strong></td>
 				       <td style="text-align:left;"><strong><?php  echo $data['countComment']; ?></strong></td>
@@ -75,22 +57,14 @@ else{ ?>
 					<td style="text-align:right;"><a href="../../index.php?action=delete&amp;id=<?= $data['id'] ?>" onclick="return(confirm('Etes-vous sûr de vouloir supprimer ce chapitre?'));" ><span class="glyphicon glyphicon-trash"></span></a></td>
 				    </tr>
 				</tbody>
-			<?php
-                    	}
-                    	$posts->closeCursor();
-                    	?>	  
+			<?php } $posts->closeCursor();?>	  
 			</table>
-			<a href="viewAddChapter.php"><em><button type="button" class="btn btn-primary btn-xs"><span class="glyphicon">&#xe127;</span> Ajouter un chapitre</button></em></a>
+			<a href="../../index.php?action=adChapter"><em><button type="button" class="btn btn-primary btn-xs"><span class="glyphicon">&#xe127;</span> Ajouter un chapitre</button></em></a>
 			<div class="commentManager">
 				<em><strong>GESTION DES COMMENTAIRES</strong></em>
 			</diV><br><br>
 			<div class="notReadCommentManager">
-				<?php                                                     
-                		 require_once("../../model/PostManager.php");
-                		 $req= new PostManager();
-                                $req= $req->fetchCountNotReadComments();
-                		?>
-				<strong>COMMENTAIRES NON LUS</strong> (<?= $req ?>)
+				<strong>COMMENTAIRES NON LUS</strong> (<?= $count ?>)
 			</diV><br><br><br>	
 			<table class="table table-dark table-hover">
 				<thead>
@@ -100,15 +74,12 @@ else{ ?>
 						<th style="text-align:right;">Commentaire</th>
 					  </tr>
 				</thead> 
-					   	<?php                                                     
-                                                         require_once("../../model/PostManager.php");
-                                                         $req=new PostManager();
-                                                         $req=$req->fetchNotReadComments();
-                                                         while ($notReadComment = $req->fetch()){ 
-                                                         $postId=$notReadComment['post_id'];
-                                                         $req2=new PostManager();
-                                                         $req2=$req2->fetchNotReadComments2($postId);
-                                                         $thisChapter = $req2->fetch();?>
+					   	<?php                                                                                                    
+                            while ($notReadComment = $req4->fetch()){    
+                            $postId=$notReadComment['post_id'];
+                            $req2=new PostManager();
+                            $req2=$req2->fetchNotReadComments2($postId);
+                            $thisChapter = $req2->fetch();?>
                         <tbody>
 	                        <tr class="table-dark">
 							<td style="color:blue;"><?= $thisChapter['title']?></td>
@@ -116,18 +87,10 @@ else{ ?>
 							<td  style="color:indigo;text-align:right;"><a href="../../index.php?action=notReadComment&amp;id=<?= $notReadComment['post_id'] ?>&amp;idC=<?= $notReadComment['id'] ?>"><b><?php echo $notReadComment['cmt'] .'[...]'.'<b></a>' ?></td>
 							 </tr> 
 						 </tbody>
-						 <?php 
-						 }
-	                    // $posts->closeCursor();
-	                     ?> 
+						 <?php } $posts->closeCursor(); ?> 
 			</table>
 			<div class="reportedCommentManager">
-						<?php                                                     
-                		                        require_once("../../model/PostManager.php");
-                		                        $req= new PostManager();
-                                                       $req= $req->fetchCountReportedComments();
-                		               ?>
-				<strong>COMMENTAIRES SIGNALÉS</strong> (<?= $req ?>)
+				<strong>COMMENTAIRES SIGNALÉS</strong> (<?= $count1 ?>)
 			</diV><br><br><br>
 			<table class="table table-dark table-hover">
 				<thead>
@@ -137,26 +100,20 @@ else{ ?>
 						<th style="color:black;text-align:right;">Modération</th>
 					  </tr>
 				</thead>
-					<?php                                                     
-	                         require_once("../../model/PostManager.php");
-                		 $req= new PostManager();
-                                $req= $req->fetchReportedComments();
-	                        while ($report = $req->fetch()){?>    	
+					<?php while ($report = $req7->fetch()){?>    	
 				<tbody>
 					   <tr class="table-dark">
 						<td style="color:blue;"><?=$report['author']?></td>
 						<td  style="color:blue;text-align:center;"><a href="../../index.php?action=notReadComment&amp;id=<?= $report['post_id'] ?>&amp;idC=<?= $report['id'] ?>"><?=$report['cmt'].' [...]'?></a></td>
 						<td style="word-spacing:8px;text-align:right;""><a href="../../index.php?action=deleteReportedComment&amp;id=<?= $report['id'] ?>"><span class="glyphicon glyphicon-trash" style="color:red;"></span></a> 
 							<a href="../../index.php?action=reportedCommentsManager&amp;id=<?= $report['post_id'] ?>&amp;idC=<?= $report['id'] ?>"><span class="glyphicon glyphicon-send" style="color:green; font-size:24px;"></span></a>
-                                               </td>
+                        </td>
 					  </tr>
 				</tbody>
-				<?php 
-				}
-                ?>
+				<?php } ?>
 			</table>
 		</div>
 	</div>
 </div>    
 </body>
-</html><?php } ?>
+</html> 
