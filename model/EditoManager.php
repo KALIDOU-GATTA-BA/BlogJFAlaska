@@ -11,6 +11,7 @@ class EditoManager extends Manager
         $db = $this->dbConnect();
         $req = $db->query('SELECT edito FROM edito');
         $req= $req->fetch(); 
+        $req= $req['edito'];
         return $req;
     }
     public function updateEdito()
@@ -20,6 +21,5 @@ class EditoManager extends Manager
        $req1->execute(array(
        'edit' => htmlspecialchars($_POST['edito'])
        )); 
-       echo "Votre éditorial a bien été mis à jour".'<br><br>';
     }
 }
