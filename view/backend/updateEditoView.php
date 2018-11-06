@@ -14,17 +14,12 @@
               <div class="form-group">
                 <label for="pwd">Éditorial:</label><br>
                <textarea  style="width:100%; height:120px" name="edito">
-                    <?php 
-                         require_once("../../model/PostManager.php");
-                         $req=new PostManager();
-                         $req=$req->edito();
-                         echo  $req['edito'] ;
-                  ?>
-              </textarea>
+                    <?=$req ?>
+             </textarea>
               </div>     
               <input type="submit"  value="Envoyer" class="btn btn-default">
             </form> <br>
-              <a href="indexBackend.php">Annuler</a> 
+              <a href="../../index.php">Annuler</a> 
           </div>
   </body>
 </html>
