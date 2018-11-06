@@ -1,18 +1,19 @@
 <?php
-
+ 
 require_once('controller/frontend.php');
 require_once('controller/backend.php');
+require_once("controller/backendControl.php");
  
 try{ 
              if(!isset($_GET['action'])){
                     $_GET['action']='listPosts';
             }
-         
+ 
             if(!isset($_GET['page']) or !is_numeric($_GET['page'])){
                         $_GET['page']=1;
             }
-
-
+ 
+ 
             if (isset($_GET['action'])) {
                 if ($_GET['action'] == 'listPosts') {
                     listPosts();
@@ -24,11 +25,11 @@ try{
                     else {
                         throw new Exception('Aucun identifiant de billet envoyé');
                     }
-         
+ 
                 }
-     
+ 
             elseif ($_GET['action'] == 'update') {
-     
+ 
                  if (isset($_GET['id']) && $_GET['id'] > 0) {
                     update($_GET['id']);
                 } else{
@@ -36,43 +37,43 @@ try{
                    }
             }
             elseif ($_GET['action'] == 'delete') {
-     
+ 
                  if (isset($_GET['id']) && $_GET['id'] > 0) {
                     delete($_GET['id']);
                 } else{
                        throw new Exception('Une erreur est survenu !');
                    }
             }
-     
+ 
             elseif ($_GET['action'] == 'confirmUpdate') {
-     
+ 
                  if (isset($_GET['id']) && $_GET['id'] > 0) {
                     confirmUpdate();
                 } else{
                        throw new Exception('Une erreur est survenu !');
                    }
             }
-     
+ 
             elseif ($_GET['action'] == 'reported') {
-     
+ 
                  if (isset($_GET['id']) && $_GET['id'] > 0) {
                     reported();
                 } else{
                        throw new Exception('Une erreur est survenu ! !');
                    }
             } 
-     
+ 
                 elseif ($_GET['action'] == 'deleteReportedComment') {
-     
+ 
                  if (isset($_GET['id']) && $_GET['id'] > 0){
                     deleteReportedComment($_GET['id']);
                 } else{
                        throw new Exception('Une erreur est survenu !');
                    }
             }
-     
+ 
             elseif ($_GET['action'] == 'notReadComment') {
-     
+ 
                  if (isset($_GET['id']) && $_GET['id'] > 0) {
                     notReadComment();
                 } else{
@@ -80,7 +81,7 @@ try{
                    }
             }
             elseif ($_GET['action'] == 'reportedCommentsManager') {
-     
+ 
                  if (isset($_GET['id']) && $_GET['id'] > 0) {
                     reportedCommentsManager();
                 } else{
@@ -99,6 +100,18 @@ try{
                 else {
                     throw new Exception('Aucun identifiant de billet envoyé');
                 }
+            }
+            elseif ($_GET['action'] == 'dashboardConnect') {
+            	dashboardConnect();
+            }
+            elseif ($_GET['action'] == 'updateEdito') {
+            	updateEdito();
+            }
+            elseif ($_GET['action'] == 'adChapter') {
+            	adChapter();
+            }
+            elseif ($_GET['action'] == 'disconnect') {
+            	disconnect();
             }
         }
         else {
