@@ -2,7 +2,7 @@
     spl_autoload_register(function ($Manager) {
     include $Manager . '.php';
     });
-    class CommentManager extends Manager
+    final class CommentManager extends Manager
     {
         public function getComments($postId)
         {
