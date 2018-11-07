@@ -4,7 +4,7 @@ spl_autoload_register(function ($Manager) {
 include $Manager . '.php';
 });
  
-class MailsManager extends Manager
+final class MailsManager extends Manager
 
 {
 	public function emails()
