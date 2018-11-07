@@ -4,7 +4,7 @@ spl_autoload_register(function ($Manager) {
 include $Manager . '.php';
 }); 
  
-class EditoManager extends Manager
+final class EditoManager extends Manager
 {
      public function edito()
     {
