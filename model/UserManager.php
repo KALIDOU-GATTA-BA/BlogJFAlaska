@@ -1,7 +1,7 @@
 <?php
 require_once("Manager.php");
  
-class UserManager extends Manager
+final class UserManager extends Manager
 {
           public function verification(){
  
