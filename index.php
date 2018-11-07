@@ -5,11 +5,11 @@ require_once('controller/backend.php');
 require_once("controller/backendControl.php");
  
 try{ 
-        if(!isset($_GET['action'])){
+        if(!isset($_GET['action']) || (isset($_GET['action']) && $_GET['action']=="")) {
             $_GET['action']='listPosts';
         }
  
-        if(!isset($_GET['page']) or !is_numeric($_GET['page'])){
+        if(!isset($_GET['page']) || !is_numeric($_GET['page'])){
             $_GET['page']=1;
         }
  
@@ -110,9 +110,6 @@ try{
                         break;               
             }
         }       
-        else {
-            listPosts();
-        }
     }
 catch(Exception $e) {
         echo 'Erreur : ' . $e->getMessage();
