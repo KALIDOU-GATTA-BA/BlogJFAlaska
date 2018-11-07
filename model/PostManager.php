@@ -4,7 +4,7 @@ spl_autoload_register(function ($Manager) {
 include $Manager . '.php';
 });
  
-class PostManager extends Manager
+final class PostManager extends Manager
 {
     public function getPosts()
     {
